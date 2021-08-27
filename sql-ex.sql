@@ -32,16 +32,13 @@ WHERE Product.model = Laptop.model
 
 7. Найдите номера моделей и цены всех имеющихся в продаже продуктов (любого типа) производителя B (латинская буква).
 SELECT model, price 
-FROM PC
-WHERE model IN (SELECT model FROM Product WHERE maker = 'B')
-UNION
-SELECT model, price
-FROM Laptop
-WHERE model IN (SELECT model FROM Product WHERE maker = 'B')
-UNION
-SELECT model, price
-FROM Printer
-WHERE model IN (SELECT model FROM Product WHERE maker = 'B')
+FROM (SELECT model, price FROM PC
+      UNION
+      SELECT model, price FROM Laptop
+      UNION
+      SELECT model, price FROM Printer
+      ) AS types
+WHERE types.model IN (SELECT model FROM Product WHERE maker = 'B')
 
 8. Найдите производителя, выпускающего ПК, но не ПК-блокноты.
 SELECT DISTINCT maker
